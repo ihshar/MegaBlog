@@ -52,6 +52,7 @@ export class AuthService{
         try {
             console.log("Here");
              await this.account.deleteSessions();
+             return true;
         }
         catch (error) {
             console.log("Appwrite serive :: logout :: error", error);
