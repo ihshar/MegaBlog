@@ -4,29 +4,48 @@ import appwriteService from "../appwrite/config";
 import Button from "../components/Button";
 import Container from "../components/container/Container";
 import parse from "html-react-parser";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+// import { fetchPost } from "../api";
+import {getPostSuccess} from '../store/postSlice'
+
 
 export default function Post() {
     const [post, setPost] = useState(null);
     const { slug } = useParams();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const userData = useSelector((state) => state.auth.userData);
 
     // const newNumber  = post.$permissions.map((data)=>data.split(":")[1].replace('")',''))
     // const finalNumber = newNumber[1]
     const isAuthor = post && userData ? post.$permissions.includes(`read("user:${userData.$id}")`) : false; // amazing logic here
-    console.log(post)
-    console.log(userData);
 
     useEffect(() => {
         if (slug) {
-            appwriteService.getPost(slug).then((post) => {
-                if (post) setPost(post);
+            const post = appwriteService.getPost(slug)
+            post.then((post) => {
+                if (post){
+                    setPost(post);
+                    dispatch(getPostSuccess(slug))
+                }
                 else navigate("/");
             });
         } else navigate("/");
-    }, [slug, navigate]);
+    }, [slug, navigate,dispatch]);
+
+    // useEffect(() => {
+    //     if (slug) {
+    //       dispatch(fetchPost(slug)).then(() => {
+    //         // Post fetched and Redux state updated
+    //         if (post) setPost(post);
+    //       }).catch(() => {
+    //         navigate("/");
+    //       });
+    //     } else {
+    //       navigate("/");
+    //     }
+    //   }, [slug, dispatch, navigate]);
 
     const deletePost = () => {
         appwriteService.deletePost(post.$id).then((status) => {

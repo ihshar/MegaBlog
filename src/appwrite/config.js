@@ -112,7 +112,7 @@ export class Service{
         }
     }
     
-    async deleteFile(fileId){
+    async deleteFile(file){
         try{
              await this.bucket.deleteFile(
                 conf.appwriteBucketId,

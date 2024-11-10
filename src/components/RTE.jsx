@@ -4,7 +4,7 @@ import {Controller } from 'react-hook-form';
 import conf from '../conf/conf';
 
 export default function RTE({name,label,control,defaultValue=""}) {
-  console.log(conf.tinyapi);
+  // console.log(conf.tinyapi);
   return (
     <div>
         {label && <label className='inline-block mb-1 pl-1'>{label}</label>
